@@ -3,15 +3,21 @@ from processor import calculate_dimensional_weight, format_tracking_label, parse
 
 @given(st.text() | st.none())
 def test_calculate_dimensional_weight_no_crash(s):
-    #To-Do:Using try and except complete this function.
-    pass
+    try:
+        calculate_dimensional_weight(s)
+    except Exception as e:
+        assert False, f"calculate_dimensional_weight crashed with: {e}"
 
 @given(st.text() | st.none())
 def test_format_tracking_label_safe(s):
-    #To-Do:Using try and except complete this function.
-    pass
+    try:
+        format_tracking_label(s)
+    except Exception as e:
+        assert False, f"format_tracking_label crashed with: {e}"
 
 @given(st.text() | st.none())
 def test_parse_package_manifest_safe(s):
-    #To-Do:Using try and except complete this function.
-    pass
+    try:
+        parse_package_manifest(s)
+    except Exception as e:
+        assert False, f"parse_package_manifest crashed with: {e}"

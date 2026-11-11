@@ -1,20 +1,41 @@
 import json
 
 def calculate_dimensional_weight(dimensions_str):
+    if not isinstance(dimensions_str, str) or 'x' not in dimensions_str:
+        return 0.0
     dims = dimensions_str.split('x')
-    length = float(dims[0])
-    width = float(dims[1])
-    height = float(dims[2])
-    return round((length * width * height) / 5000.0, 2)
+    if len(dims) != 3:
+        return 0.0
+    try:
+        length = float(dims[0])
+        width = float(dims[1])
+        height = float(dims[2])
+        if length < 0 or width < 0 or height < 0:
+            return 0.0
+        return round((length * width * height) / 5000.0, 2)
+    except (ValueError, TypeError):
+        return 0.0
 
 def format_tracking_label(raw_code):
+    if not isinstance(raw_code, str) or not raw_code:
+        return "INVALID"
     prefix = raw_code[0].upper()
-    tracking_num = int(raw_code[1:])
-    return f"{prefix}-{tracking_num:06d}"
+    try:
+        tracking_num = int(raw_code[1:])
+        return f"{prefix}-{tracking_num:06d}"
+    except ValueError:
+        return "INVALID"
 
 def parse_package_manifest(json_payload):
-    data = json.loads(json_payload)
-    return float(data["weight"])
+    if not isinstance(json_payload, str):
+        return 0.0
+    try:
+        data = json.loads(json_payload)
+        if isinstance(data, dict) and "weight" in data:
+            return float(data["weight"])
+        return 0.0
+    except (json.JSONDecodeError, ValueError, TypeError):
+        return 0.0
 
 def main():
     print("==== Running calculate_dimensional_weight ====")
